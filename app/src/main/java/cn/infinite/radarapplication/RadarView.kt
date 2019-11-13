@@ -3,11 +3,8 @@ package cn.infinite.radarapplication
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 import kotlin.math.tan
 import kotlin.random.Random
 
@@ -91,15 +88,12 @@ class RadarView : View {
         mHeight = h.toFloat()
         mRadius = mWidth / 2.toFloat()
         mRect = RectF()
-        generateSpot(5)
+        generateSpot(10)
 
     }
 
-    private var stopX: Float = 0f
-    private var stopY: Float = 0f
     private var degree = 0
     private var mRadius = 0f
-    private var angle = 0
     private lateinit var mRect: RectF
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -182,16 +176,32 @@ class RadarView : View {
     }
 
     private fun generateSpot(count: Int) {
-//        for (i in 0 until count) {
-//            val cx = Random.nextInt(mWidth.toInt()).toFloat()
-//            val cy = Random.nextInt(mWidth.toInt()).toFloat()
-//            mSpots.add(Spot(cx, cy, 5f, false))
-//        }
-        mSpots.add(Spot(500f,200f , 10f, false))
-        mSpots.add(Spot(600f, 600f, 10f, false))
-        mSpots.add(Spot(200f, 700f, 10f, false))
-        mSpots.add(Spot(200f, 200f, 10f, false))
-        mSpots.add(Spot(394f, 200f, 50f, false))
+
+        mSpots.clear()
+        while (mSpots.size<count){
+            val cx = Random.nextInt(mWidth.toInt()).toFloat()
+            val cy = Random.nextInt(mWidth.toInt()).toFloat()
+
+            if (cx<mRadius&&cy<mRadius){
+                if (cx*cx+cy*cy>mRadius*mRadius){
+                    continue
+                }
+            }else if (cx>mRadius&&cy<mRadius){
+                if ((cx-mRadius)*(cx-mRadius)+cy*cy>mRadius*mRadius){
+                    continue
+                }
+            }else if (cx>mRadius&&cy>mRadius){
+                if ((cx-mRadius)*(cx-mRadius)+(cy-mRadius)*(cy-mRadius)>mRadius*mRadius){
+                    continue
+                }
+            }else if(cx<mRadius&&cy>mRadius){
+                if (cx*cx+(cy-mRadius)*(cy-mRadius)>mRadius*mRadius){
+                    continue
+                }
+            }
+
+            mSpots.add(Spot(cx, cy, 15f, false))
+        }
 
     }
 
