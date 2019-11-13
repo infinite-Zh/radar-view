@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import kotlin.math.PI
+import kotlin.math.pow
 import kotlin.math.tan
 import kotlin.random.Random
 
@@ -88,7 +89,7 @@ class RadarView : View {
         mHeight = h.toFloat()
         mRadius = mWidth / 2.toFloat()
         mRect = RectF()
-        generateSpot(10)
+        generateSpot(20)
 
     }
 
@@ -183,19 +184,19 @@ class RadarView : View {
             val cy = Random.nextInt(mWidth.toInt()).toFloat()
 
             if (cx<mRadius&&cy<mRadius){
-                if (cx*cx+cy*cy>mRadius*mRadius){
+                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
                     continue
                 }
             }else if (cx>mRadius&&cy<mRadius){
-                if ((cx-mRadius)*(cx-mRadius)+cy*cy>mRadius*mRadius){
+                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
                     continue
                 }
             }else if (cx>mRadius&&cy>mRadius){
-                if ((cx-mRadius)*(cx-mRadius)+(cy-mRadius)*(cy-mRadius)>mRadius*mRadius){
+                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
                     continue
                 }
             }else if(cx<mRadius&&cy>mRadius){
-                if (cx*cx+(cy-mRadius)*(cy-mRadius)>mRadius*mRadius){
+                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
                     continue
                 }
             }
