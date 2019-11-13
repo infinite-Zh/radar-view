@@ -176,34 +176,16 @@ class RadarView : View {
         return this * PI / 180
     }
 
-    private fun generateSpot(count: Int) {
-
+     fun generateSpot(count: Int) {
         mSpots.clear()
         while (mSpots.size<count){
             val cx = Random.nextInt(mWidth.toInt()).toFloat()
             val cy = Random.nextInt(mWidth.toInt()).toFloat()
-
-            if (cx<mRadius&&cy<mRadius){
-                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
-                    continue
-                }
-            }else if (cx>mRadius&&cy<mRadius){
-                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
-                    continue
-                }
-            }else if (cx>mRadius&&cy>mRadius){
-                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
-                    continue
-                }
-            }else if(cx<mRadius&&cy>mRadius){
-                if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
-                    continue
-                }
+            if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
+                continue
             }
-
-            mSpots.add(Spot(cx, cy, 15f, false))
+            mSpots.add(Spot(cx, cy, 12f, false))
         }
-
     }
 
     private val mSpots = mutableListOf<Spot>()
