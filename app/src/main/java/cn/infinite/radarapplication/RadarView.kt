@@ -21,10 +21,9 @@ class RadarView : View {
         context,
         attributeSet,
         defStyleAttr
-    ) {
-    }
+    )
 
-    val mScanColor = 0x9D00ff00.toInt()
+    private val mScanColor = 0x9D00ff00.toInt()
 
     private val mSpotPaint: Paint by lazy {
         Paint().apply {
@@ -33,18 +32,12 @@ class RadarView : View {
         }
     }
 
-    // 指针的画笔
-    private var mPointerPaint: Paint = Paint().apply {
-        color = Color.BLACK
-        style = Paint.Style.FILL
-        strokeWidth = 10f
-    }
     // 扫描区域的画笔
     private val mScanPaint: Paint by lazy {
         Paint().apply {
             shader = SweepGradient(
-                mWidth.toFloat() / 2,
-                mHeight.toFloat() / 2,
+                mWidth / 2,
+                mHeight / 2,
                 Color.GREEN,
                 Color.TRANSPARENT
             )
