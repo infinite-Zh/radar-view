@@ -8,6 +8,7 @@ import android.view.View
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.tan
 import kotlin.random.Random
 
 /**
@@ -109,14 +110,8 @@ class RadarView : View {
             drawCircle(mRadius, mRadius, mRadius, mBgPaint)
             drawLine(0f, mHeight / 2, mWidth, mHeight / 2, mLinePaint)
             drawLine(mWidth / 2, 0f, mWidth / 2, mHeight, mLinePaint)
-            if ((degree / 360) % 2 == 0) {
-                mSpots.forEach {
-                    drawCircle(it.cx, it.cy, it.radius, mSpotPaint)
-                }
-                mSpots.clear()
-                generateSpot(8)
-            }
 
+            drawSpot(this,degree)
 
             val each = mRadius / (mOutlineCircleNum + 1)
             for (i in 1 until mOutlineCircleNum + 1) {
@@ -133,22 +128,74 @@ class RadarView : View {
 
         }
         degree++
-        postInvalidateDelayed(0)
+        if (degree == 360) {
+            degree = 0
+        }
+        postInvalidateDelayed(10)
+    }
+
+    // 当扫描位置经过当前点时，绘制点
+    private fun drawSpot(canvas: Canvas, degree: Int) {
+        mSpots.forEach {
+            val cx = it.cx
+            val cy = it.cy
+            /**
+             * 由于是逆时针旋转，所以当degree在0-90时，扫描位置在第1象限，
+             * 在90-180时，在第4象限
+             * 在180-270时，在第3象限
+             * 在270-360时，在第2象限
+             * */
+            when (degree) {
+                in 0..90 -> {
+                    if (tan(degree.getRadian()).compareTo(cx / cy) >= 0&&(cx>mRadius&&cy<mRadius)) {
+                        it.showed=true
+                    }
+                }
+                in 91..180 -> {
+                    if (tan((degree - 270).getRadian()).compareTo(cy / cx) >= 0&&(cx<mRadius&&cy<mRadius)) {
+                        it.showed=true
+                    }
+
+                }
+                in 181..270 -> {
+                    if (tan((degree - 180).getRadian()).compareTo(cy / cx) >= 0&&(cx<mRadius&&cy>mRadius)) {
+                        it.showed=true
+                    }
+                }
+                else -> {
+                    if (tan((degree - 90).getRadian()).compareTo(cy / cx) >= 0&&(cx>mRadius&&cy>mRadius)) {
+                        it.showed=true
+                    }
+                }
+
+            }
+            if (it.showed) {
+                canvas.drawCircle(cx, cy, it.radius, mSpotPaint)
+            }
+
+        }
     }
 
     private fun Int.getRadian(): Double {
+
         return this * PI / 180
     }
 
     private fun generateSpot(count: Int) {
-        for (i in 0 until count) {
-            val cx = Random.nextInt(mWidth.toInt()).toFloat()
-            val cy = Random.nextInt(mWidth.toInt()).toFloat()
-            mSpots.add(Spot(cx, cy, 5f))
-        }
+//        for (i in 0 until count) {
+//            val cx = Random.nextInt(mWidth.toInt()).toFloat()
+//            val cy = Random.nextInt(mWidth.toInt()).toFloat()
+//            mSpots.add(Spot(cx, cy, 5f, false))
+//        }
+        mSpots.add(Spot(500f,200f , 10f, false))
+        mSpots.add(Spot(600f, 600f, 10f, false))
+        mSpots.add(Spot(200f, 700f, 10f, false))
+        mSpots.add(Spot(200f, 200f, 10f, false))
+        mSpots.add(Spot(394f, 200f, 50f, false))
+
     }
 
     private val mSpots = mutableListOf<Spot>()
 
-    data class Spot(var cx: Float, val cy: Float, val radius: Float)
+    data class Spot(var cx: Float, val cy: Float, val radius: Float, var showed: Boolean)
 }
