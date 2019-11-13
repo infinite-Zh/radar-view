@@ -109,7 +109,14 @@ class RadarView : View {
             drawCircle(mRadius, mRadius, mRadius, mBgPaint)
             drawLine(0f, mHeight / 2, mWidth, mHeight / 2, mLinePaint)
             drawLine(mWidth / 2, 0f, mWidth / 2, mHeight, mLinePaint)
-            drawCircle(cx.toFloat(), cy.toFloat(), 5f, mSpotPaint)
+            if ((degree / 360) % 2 == 0) {
+                mSpots.forEach {
+                    drawCircle(it.cx, it.cy, it.radius, mSpotPaint)
+                }
+                mSpots.clear()
+                generateSpot(8)
+            }
+
 
             val each = mRadius / (mOutlineCircleNum + 1)
             for (i in 1 until mOutlineCircleNum + 1) {
