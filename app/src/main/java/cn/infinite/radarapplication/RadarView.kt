@@ -214,7 +214,7 @@ class RadarView : View {
         while (mSpots.size < count) {
             val cx = Random.nextInt(mWidth.toInt()).toFloat()
             val cy = Random.nextInt(mWidth.toInt()).toFloat()
-            if ((cx - mRadius).pow(2) + (cy - mRadius).pow(2) > mRadius.pow(2)) {
+            if ((cx - mRadius-spotRadius).pow(2) + (cy - mRadius-spotRadius).pow(2) > mRadius.pow(2)) {
                 continue
             }
             mSpots.add(Spot(cx, cy, spotRadius.toFloat(), false))
