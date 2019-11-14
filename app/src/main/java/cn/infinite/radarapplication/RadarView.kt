@@ -138,7 +138,6 @@ class RadarView : View {
             drawLine(0f, mHeight / 2, mWidth, mHeight / 2, mLinePaint)
             drawLine(mWidth / 2, 0f, mWidth / 2, mHeight, mLinePaint)
 
-            drawSpot(this, degree)
 
             val each = mRadius / (circleCount + 1)
             for (i in 1 until circleCount + 1) {
@@ -150,6 +149,8 @@ class RadarView : View {
                     bottom = mRadius + offset
                 }, 0f, 360f, false, mOutlineCirclePaint)
             }
+            drawSpot(this, degree)
+
             concat(rotateMatrix)
             drawCircle(mRadius, mRadius, mRadius, mScanPaint)
 
