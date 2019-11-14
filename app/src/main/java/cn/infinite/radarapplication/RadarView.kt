@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.tan
 import kotlin.random.Random
@@ -135,23 +136,23 @@ class RadarView : View {
              * */
             when (degree) {
                 in 0..90 -> {
-                    if (tan(degree.getRadian()).compareTo(cx / cy) >= 0&&(cx>mRadius&&cy<mRadius)) {
+                    if (tan(degree.getRadian()).compareTo(abs((cy-mRadius) / (cx-mRadius))) >= 0&&(cx>mRadius&&cy<mRadius)) {
                         it.showed=true
                     }
                 }
                 in 91..180 -> {
-                    if (tan((degree - 270).getRadian()).compareTo(cy / cx) >= 0&&(cx<mRadius&&cy<mRadius)) {
+                    if (tan((degree - 90).getRadian()).compareTo(abs((cx-mRadius) / (cy-mRadius))) >= 0&&(cx<mRadius&&cy<mRadius)) {
                         it.showed=true
                     }
 
                 }
                 in 181..270 -> {
-                    if (tan((degree - 180).getRadian()).compareTo(cy / cx) >= 0&&(cx<mRadius&&cy>mRadius)) {
+                    if (tan((degree - 180).getRadian()).compareTo(abs((cy-mRadius) / (cx-mRadius))) >= 0&&(cx<mRadius&&cy>mRadius)) {
                         it.showed=true
                     }
                 }
                 else -> {
-                    if (tan((degree - 90).getRadian()).compareTo(cy / cx) >= 0&&(cx>mRadius&&cy>mRadius)) {
+                    if (tan((degree - 270).getRadian()).compareTo(abs((cx-mRadius) / (cy-mRadius))) >= 0&&(cx>mRadius&&cy>mRadius)) {
                         it.showed=true
                     }
                 }
