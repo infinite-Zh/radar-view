@@ -17,18 +17,57 @@ import kotlin.random.Random
 class RadarView : View {
 
     constructor(context: Context) : super(context) {}
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {}
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
+        initParams(context, attributeSet, 0)
+    }
+
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
         context,
         attributeSet,
         defStyleAttr
-    )
+    ) {
+        initParams(context, attributeSet, defStyleAttr)
+    }
 
-    private val mScanColor = 0x9D00ff00.toInt()
+    companion object {
+        const val SWEEP_COLOR = 0x9D00ff00.toInt()
+        const val AXIS_WIDTH = 5
+        const val AXIS_COLOR = Color.WHITE
+        const val CIRCLE_COLOR = Color.WHITE
+        const val CIRCLE_WIDTH = 5
+        const val CIRCLE_COUNT = 2
+        const val SPOT_COLOR = Color.WHITE
+        const val SPOT_COUNT = 8
+        const val SPOT_RADIUS = 12
+    }
+
+    private fun initParams(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.RadarView, defStyleAttr, 0)
+        sweepColor = ta.getColor(R.styleable.RadarView_sweepColor, SWEEP_COLOR)
+        axisColor = ta.getColor(R.styleable.RadarView_axisColor, AXIS_COLOR)
+        axisWidth = ta.getDimensionPixelSize(R.styleable.RadarView_axisWidth, AXIS_WIDTH)
+        circleColor = ta.getColor(R.styleable.RadarView_circleColor, CIRCLE_COLOR)
+        circleWidth = ta.getDimensionPixelSize(R.styleable.RadarView_circleWidth, CIRCLE_WIDTH)
+        circleCount = ta.getInt(R.styleable.RadarView_axisColor, CIRCLE_COUNT)
+        spotColor = ta.getColor(R.styleable.RadarView_spotColor, SPOT_COLOR)
+        spotRadius = ta.getDimensionPixelSize(R.styleable.RadarView_spotRadius, SPOT_RADIUS)
+        spotCount = ta.getInt(R.styleable.RadarView_spotCount, SPOT_COUNT)
+        ta.recycle()
+    }
+
+    private var sweepColor = SWEEP_COLOR
+    private var axisColor = AXIS_COLOR
+    private var axisWidth = AXIS_WIDTH
+    private var circleColor = CIRCLE_COLOR
+    private var circleWidth = CIRCLE_WIDTH
+    private var circleCount = CIRCLE_COUNT
+    private var spotColor = SPOT_COLOR
+    private var spotRadius = SPOT_RADIUS
+    private var spotCount = SPOT_COUNT
 
     private val mSpotPaint: Paint by lazy {
         Paint().apply {
-            color = Color.WHITE
+            color = spotColor
             style = Paint.Style.FILL_AND_STROKE
         }
     }
@@ -39,10 +78,10 @@ class RadarView : View {
             shader = SweepGradient(
                 mWidth / 2,
                 mHeight / 2,
-                Color.GREEN,
+                sweepColor,
                 Color.TRANSPARENT
             )
-            color = mScanColor
+            color = sweepColor
         }
     }
 
@@ -54,20 +93,19 @@ class RadarView : View {
 
     private val mLinePaint: Paint by lazy {
         Paint().apply {
-            color = Color.WHITE
-            strokeWidth = 5f
+            color = axisColor
+            strokeWidth = AXIS_WIDTH.toFloat()
         }
     }
 
-    private val mOutlineCirllePaint: Paint by lazy {
+    private val mOutlineCirclePaint: Paint by lazy {
         Paint().apply {
-            color = Color.WHITE
-            strokeWidth = 3f
+            color = circleColor
+            strokeWidth = circleWidth.toFloat()
             style = Paint.Style.STROKE
         }
     }
 
-    private var mOutlineCircleNum = 2
     private val rotateMatrix = Matrix()
 
     private var mWidth = 0f
@@ -83,7 +121,7 @@ class RadarView : View {
         mHeight = h.toFloat()
         mRadius = mWidth / 2.toFloat()
         mRect = RectF()
-        generateSpot(20)
+        generateSpot(spotCount)
 
     }
 
@@ -100,17 +138,17 @@ class RadarView : View {
             drawLine(0f, mHeight / 2, mWidth, mHeight / 2, mLinePaint)
             drawLine(mWidth / 2, 0f, mWidth / 2, mHeight, mLinePaint)
 
-            drawSpot(this,degree)
+            drawSpot(this, degree)
 
-            val each = mRadius / (mOutlineCircleNum + 1)
-            for (i in 1 until mOutlineCircleNum + 1) {
+            val each = mRadius / (circleCount + 1)
+            for (i in 1 until circleCount + 1) {
                 val offset = each * i
                 drawArc(mRect.apply {
                     left = mRadius - offset
                     top = mRadius - offset
                     right = mRadius + offset
                     bottom = mRadius + offset
-                }, 0f, 360f, false, mOutlineCirllePaint)
+                }, 0f, 360f, false, mOutlineCirclePaint)
             }
             concat(rotateMatrix)
             drawCircle(mRadius, mRadius, mRadius, mScanPaint)
@@ -136,24 +174,24 @@ class RadarView : View {
              * */
             when (degree) {
                 in 0..90 -> {
-                    if (tan(degree.getRadian()).compareTo(abs((cy-mRadius) / (cx-mRadius))) >= 0&&(cx>mRadius&&cy<mRadius)) {
-                        it.showed=true
+                    if (tan(degree.getRadian()).compareTo(abs((cy - mRadius) / (cx - mRadius))) >= 0 && (cx > mRadius && cy < mRadius)) {
+                        it.showed = true
                     }
                 }
                 in 91..180 -> {
-                    if (tan((degree - 90).getRadian()).compareTo(abs((cx-mRadius) / (cy-mRadius))) >= 0&&(cx<mRadius&&cy<mRadius)) {
-                        it.showed=true
+                    if (tan((degree - 90).getRadian()).compareTo(abs((cx - mRadius) / (cy - mRadius))) >= 0 && (cx < mRadius && cy < mRadius)) {
+                        it.showed = true
                     }
 
                 }
                 in 181..270 -> {
-                    if (tan((degree - 180).getRadian()).compareTo(abs((cy-mRadius) / (cx-mRadius))) >= 0&&(cx<mRadius&&cy>mRadius)) {
-                        it.showed=true
+                    if (tan((degree - 180).getRadian()).compareTo(abs((cy - mRadius) / (cx - mRadius))) >= 0 && (cx < mRadius && cy > mRadius)) {
+                        it.showed = true
                     }
                 }
                 else -> {
-                    if (tan((degree - 270).getRadian()).compareTo(abs((cx-mRadius) / (cy-mRadius))) >= 0&&(cx>mRadius&&cy>mRadius)) {
-                        it.showed=true
+                    if (tan((degree - 270).getRadian()).compareTo(abs((cx - mRadius) / (cy - mRadius))) >= 0 && (cx > mRadius && cy > mRadius)) {
+                        it.showed = true
                     }
                 }
 
@@ -170,15 +208,15 @@ class RadarView : View {
         return this * PI / 180
     }
 
-     fun generateSpot(count: Int) {
+    fun generateSpot(count: Int) {
         mSpots.clear()
-        while (mSpots.size<count){
+        while (mSpots.size < count) {
             val cx = Random.nextInt(mWidth.toInt()).toFloat()
             val cy = Random.nextInt(mWidth.toInt()).toFloat()
-            if ((cx-mRadius).pow(2)+(cy-mRadius).pow(2)>mRadius.pow(2)){
+            if ((cx - mRadius).pow(2) + (cy - mRadius).pow(2) > mRadius.pow(2)) {
                 continue
             }
-            mSpots.add(Spot(cx, cy, 12f, false))
+            mSpots.add(Spot(cx, cy, spotRadius.toFloat(), false))
         }
     }
 

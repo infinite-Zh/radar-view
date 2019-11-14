@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RadarView">
+        <attr name="sweepColor" format="color"/>
+        <attr name="axisColor" format="color"/>
+        <attr name="axisWidth" format="dimension"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="circleWidth" format="dimension"/>
+        <attr name="circleCount" format="integer"/>
+        <attr name="spotColor" format="color"/>
+        <attr name="spotRadius" format="dimension"/>
+        <attr name="spotCount" format="integer"/>
+    </declare-styleable>
+</resources>
