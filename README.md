@@ -1,5 +1,6 @@
 # 雷达扫描效果
-## 截图(gif效果没法看)
+ 截图(gif效果没法看)
+
 ![](screenshot.jpg)
 
 在xml中使用：
@@ -30,7 +31,7 @@
 |circleCount|圆圈数量|
 |circleWidth|圆圈线的宽度|
 |axisColor|十字坐标轴的颜色|
-|axisWidth|狮子座吧轴线宽|
+|axisWidth|十字坐标轴线宽|
 |spotCount|扫面出点的数量|
 |spotColor|点的颜色|
 |spotRadius|点的半径|
