@@ -58,16 +58,17 @@ class RadarView : View {
         ta.recycle()
     }
 
-    private var sweepColor = SWEEP_COLOR
-    private var axisColor = AXIS_COLOR
-    private var axisWidth = AXIS_WIDTH
-    private var circleColor = CIRCLE_COLOR
-    private var circleWidth = CIRCLE_WIDTH
-    private var circleCount = CIRCLE_COUNT
-    private var spotColor = SPOT_COLOR
-    private var spotRadius = SPOT_RADIUS
-    private var spotCount = SPOT_COUNT
-    private var radarBackground = RADAR_BACKGROUND
+    var sweepColor = SWEEP_COLOR
+    var axisColor = AXIS_COLOR
+    var axisWidth = AXIS_WIDTH
+    var circleColor = CIRCLE_COLOR
+    var circleWidth = CIRCLE_WIDTH
+    var circleCount = CIRCLE_COUNT
+    var spotColor = SPOT_COLOR
+    var spotRadius = SPOT_RADIUS
+    var spotCount = SPOT_COUNT
+    var radarBackground = RADAR_BACKGROUND
+
 
     private val mSpotPaint: Paint by lazy {
         Paint().apply {
