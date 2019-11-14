@@ -12,9 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         radarView.spotCount=3
         btnGenerate.setOnClickListener {
-            radarView.generateSpot(5)
-
-            Log.e("size","${radarView.measuredWidth}+++++${radarView.measuredHeight}")
+            radarView.generateSpot(10)
         }
     }
 }
