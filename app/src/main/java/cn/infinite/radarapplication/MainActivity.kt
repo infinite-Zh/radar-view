@@ -2,6 +2,7 @@ package cn.infinite.radarapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,9 +11,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         radarView.spotCount=3
-
         btnGenerate.setOnClickListener {
             radarView.generateSpot(5)
+
+            Log.e("size","${radarView.measuredWidth}+++++${radarView.measuredHeight}")
         }
     }
 }

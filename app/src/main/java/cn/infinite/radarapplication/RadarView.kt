@@ -3,11 +3,10 @@ package cn.infinite.radarapplication
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.tan
+import androidx.annotation.ColorRes
+import kotlin.math.*
 import kotlin.random.Random
 
 /**
@@ -58,6 +57,7 @@ class RadarView : View {
         ta.recycle()
     }
 
+    @ColorRes
     var sweepColor = SWEEP_COLOR
     var axisColor = AXIS_COLOR
     var axisWidth = AXIS_WIDTH
@@ -74,7 +74,7 @@ class RadarView : View {
         Paint().apply {
             color = spotColor
             style = Paint.Style.FILL_AND_STROKE
-            strokeWidth=0f
+            strokeWidth = 0f
         }
     }
 
@@ -118,17 +118,21 @@ class RadarView : View {
     private var mHeight = 0f
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSize = MeasureSpec.getSize(heightMeasureSpec)
+        val size = min(widthSize, heightSize)
+        setMeasuredDimension(size, size)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mWidth = w.toFloat()
-        mHeight = h.toFloat()
+        mHeight = mWidth
         mRadius = mWidth / 2.toFloat()
         mRect = RectF()
         generateSpot(spotCount)
-
+        Log.e("onSizeChanged", "$w,$h")
     }
 
     private var degree = 0
@@ -223,7 +227,7 @@ class RadarView : View {
             val dx = cx + spotRadius
             val dy = cy + spotRadius
 
-            if ((dx - mRadius).pow(2) + (dy-mRadius).pow(2) < mRadius.pow(2)){
+            if ((dx - mRadius).pow(2) + (dy - mRadius).pow(2) < mRadius.pow(2)) {
                 mSpots.add(Spot(cx, cy, spotRadius.toFloat(), false))
             }
 
