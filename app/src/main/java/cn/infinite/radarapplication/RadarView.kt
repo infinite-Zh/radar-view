@@ -3,7 +3,6 @@ package cn.infinite.radarapplication
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.annotation.ColorRes
 import kotlin.math.*
@@ -132,7 +131,6 @@ class RadarView : View {
         mRadius = mWidth / 2.toFloat()
         mRect = RectF()
         generateSpot(spotCount)
-        Log.e("onSizeChanged", "$w,$h")
     }
 
     private var degree = 0
