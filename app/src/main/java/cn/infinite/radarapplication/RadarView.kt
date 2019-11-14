@@ -56,7 +56,6 @@ class RadarView : View {
         ta.recycle()
     }
 
-    @ColorRes
     var sweepColor = SWEEP_COLOR
     var axisColor = AXIS_COLOR
     var axisWidth = AXIS_WIDTH
