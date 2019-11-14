@@ -48,7 +48,7 @@ class RadarView : View {
         axisWidth = ta.getDimensionPixelSize(R.styleable.RadarView_axisWidth, AXIS_WIDTH)
         circleColor = ta.getColor(R.styleable.RadarView_circleColor, CIRCLE_COLOR)
         circleWidth = ta.getDimensionPixelSize(R.styleable.RadarView_circleWidth, CIRCLE_WIDTH)
-        circleCount = ta.getInt(R.styleable.RadarView_axisColor, CIRCLE_COUNT)
+        circleCount = ta.getInt(R.styleable.RadarView_circleCount, CIRCLE_COUNT)
         spotColor = ta.getColor(R.styleable.RadarView_spotColor, SPOT_COLOR)
         spotRadius = ta.getDimensionPixelSize(R.styleable.RadarView_spotRadius, SPOT_RADIUS)
         spotCount = ta.getInt(R.styleable.RadarView_spotCount, SPOT_COUNT)
