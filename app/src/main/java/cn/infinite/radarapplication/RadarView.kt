@@ -39,6 +39,7 @@ class RadarView : View {
         const val SPOT_COLOR = Color.WHITE
         const val SPOT_COUNT = 8
         const val SPOT_RADIUS = 12
+        const val RADAR_BACKGROUND = Color.GRAY
     }
 
     private fun initParams(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
@@ -52,6 +53,8 @@ class RadarView : View {
         spotColor = ta.getColor(R.styleable.RadarView_spotColor, SPOT_COLOR)
         spotRadius = ta.getDimensionPixelSize(R.styleable.RadarView_spotRadius, SPOT_RADIUS)
         spotCount = ta.getInt(R.styleable.RadarView_spotCount, SPOT_COUNT)
+        radarBackground = ta.getColor(R.styleable.RadarView_radarBackground, RADAR_BACKGROUND)
+
         ta.recycle()
     }
 
@@ -64,11 +67,13 @@ class RadarView : View {
     private var spotColor = SPOT_COLOR
     private var spotRadius = SPOT_RADIUS
     private var spotCount = SPOT_COUNT
+    private var radarBackground = RADAR_BACKGROUND
 
     private val mSpotPaint: Paint by lazy {
         Paint().apply {
             color = spotColor
             style = Paint.Style.FILL_AND_STROKE
+            strokeWidth=0f
         }
     }
 
@@ -87,7 +92,7 @@ class RadarView : View {
 
     private val mBgPaint: Paint by lazy {
         Paint().apply {
-            color = Color.GRAY
+            color = radarBackground
         }
     }
 
@@ -159,7 +164,7 @@ class RadarView : View {
         if (degree == 360) {
             degree = 0
         }
-        postInvalidateDelayed(10)
+        postInvalidateDelayed(0)
     }
 
     // 当扫描位置经过当前点时，绘制点
@@ -214,10 +219,13 @@ class RadarView : View {
         while (mSpots.size < count) {
             val cx = Random.nextInt(mWidth.toInt()).toFloat()
             val cy = Random.nextInt(mWidth.toInt()).toFloat()
-            if ((cx - mRadius-spotRadius).pow(2) + (cy - mRadius-spotRadius).pow(2) > mRadius.pow(2)) {
-                continue
+            val dx = cx + spotRadius
+            val dy = cy + spotRadius
+
+            if ((dx - mRadius).pow(2) + (dy-mRadius).pow(2) < mRadius.pow(2)){
+                mSpots.add(Spot(cx, cy, spotRadius.toFloat(), false))
             }
-            mSpots.add(Spot(cx, cy, spotRadius.toFloat(), false))
+
         }
     }
 

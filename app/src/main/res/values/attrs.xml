@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RadarView">
+        <attr name="radarBackground" format="color"/>
         <attr name="sweepColor" format="color"/>
         <attr name="axisColor" format="color"/>
         <attr name="axisWidth" format="dimension"/>

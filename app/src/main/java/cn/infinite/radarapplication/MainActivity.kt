@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         btnGenerate.setOnClickListener {
-            radarView.generateSpot(12)
+            radarView.generateSpot(50)
         }
     }
 }
